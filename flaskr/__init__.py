@@ -1,7 +1,11 @@
 import os
 
-from flask import Flask, render_template
+import requests
+import time
 
+## Web App Functions ##
+
+from flask import Flask, render_template
 
 def create_app(test_config=None):
     # create and configure the app
@@ -25,4 +29,19 @@ def create_app(test_config=None):
     @app.route('/')
     def home_Page():
         return render_template('base.html')
+
+    from . import home
+    app.register_blueprint(home.bp)
+
     return app
+
+## API Functions ##
+
+api_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
+api_KEY = ""
+
+def get_Lookup(cve_id=None):
+    headers = {"apiKEY": api_KEY} if api_KEY else {}
+    params = {"cveId" : cve_id}
+    response = requests.get(api_URL, params=params, headers=headers)
+    return response.json()
