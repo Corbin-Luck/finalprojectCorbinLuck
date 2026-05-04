@@ -1,3 +1,6 @@
+### INF601 - Advanced Programming in Python
+### Corbin Luck
+### Final Project
 
 from flask import Blueprint, render_template, request as flask_request
 from flaskr import api_URL, api_KEY

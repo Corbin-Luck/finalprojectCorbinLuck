@@ -1,3 +1,7 @@
+### INF601 - Advanced Programming in Python
+### Corbin Luck
+### Final Project
+
 import os
 from flask import redirect, url_for
 import requests

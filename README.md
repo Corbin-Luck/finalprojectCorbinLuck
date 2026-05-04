@@ -3,42 +3,43 @@
 ### Final Project
  
  
-# Project Title
+# National Vulnerability Database Lookup
  
-Simple overview of use/purpose.
+A website that parses through the National Vulnerability Database and returns searches based on keywords
  
 ## Description
  
-An in-depth paragraph about your project and overview of use.
+There are three tabs on the website: Lookup, Low-Severity, and Donations. The Lookup page is where you can search
+through the database based on keywords such as apache, windows, ect. The Low-Severity page parses through 2000 entries
+and orders them based on the lowest severity providing a description for them. The Donations page is a mock donations 
+page that is found on many free to use websites.
  
 ## Getting Started
  
 ### Dependencies
- 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
-* List pip install instructions.
+
+This project was tested on a Window 11 machine, other OS systems may or may not work
+Please install the pip requirements:
+```
+pip install -r requirements.txt
+```
  
 ### Installing
  
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Click to the <> Code button at the top of the page
+* Copy the web URL after selecting HTTPS
+* Using a program such as Pycharm clone the repository using the link you copied
+* If you haven't already install the requirments folder using the command above
  
 ### Executing program
  
-* How to run the program
-* Step-by-step bullets
+* After cloning the repository you will want to run the following command below
 ```
-code blocks for commands
+flask --app flaskr run --debug
 ```
- 
-## Help
- 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
- 
+* Next you click on http://127.0.0.1:5000 link to open the project in your browser
+* Finally click in the search tab on the website to filter by keywords
+
 ## Authors
  
 Corbin Luck
@@ -50,7 +51,7 @@ Corbin Luck
  
 ## License
  
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+N/A
  
 ## Acknowledgments
  
