@@ -1,7 +1,6 @@
 import os
 from flask import redirect, url_for
 import requests
-import time
 
 ## Web App Functions ##
 
@@ -31,6 +30,9 @@ def create_app(test_config=None):
 
     from . import low
     app.register_blueprint(low.bp)
+
+    from . import search
+    app.register_blueprint(search.bp)
 
     return app
 

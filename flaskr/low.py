@@ -43,7 +43,7 @@ def get_low_severity():
 
             cves.append({
                 "id": cve_id,
-                "description": description[:180] + "..." if len(description) > 180 else description,
+                "description": description[:250] + "..." if len(description) > 250 else description,
                 "score": score,
                 "published": published,
             })

@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<style>
+  :root {
+    --accent: #00bfff;
+    --accent-dim: rgba(0, 191, 255, 0.12);
+    --accent-border: rgba(0, 191, 255, 0.25);
+    --bg-page: #13131f;
+    --bg-card: #1e1e2f;
+    --text: #e8e8f0;
+    --text-dim: #7a7a9a;
+    --low-green: #00e5a0;
+    --warn: #ff6b35;
+    --font-main: Arial, sans-serif;
+    --font-mono: 'Courier New', monospace;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text);
+  }
+
+  .search-page {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+  }
+
+  .search-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .search-header .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .search-header h1 {
+    font-family: var(--font-main);
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: white;
+    margin: 0 0 12px;
+    letter-spacing: 1px;
+  }
+
+  .search-header p {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .search-card {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+  }
+
+  .search-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .input-label {
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .search-input {
+    width: 100%;
+    background: #13131f;
+    border: 1px solid var(--accent-border);
+    border-radius: 4px;
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .search-input::placeholder {
+    color: var(--text-dim);
+  }
+
+  .search-hint {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .search-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #0a0a14;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 8px;
+  }
+
+  .search-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .search-btn:active {
+    transform: translateY(0);
+  }
+
+  .example-tags {
+    margin-top: 28px;
+    border-top: 1px solid var(--accent-border);
+    padding-top: 20px;
+  }
+
+  .example-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    padding: 4px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    text-decoration: none;
+  }
+
+  .tag:hover {
+    background: rgba(0, 191, 255, 0.25);
+    border-color: var(--accent);
+  }
+
+  .stats-bar {
+    display: flex;
+    gap: 28px;
+    margin-top: 48px;
+    justify-content: center;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-desc {
+    font-family: var(--font-main);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .stat-divider {
+    width: 1px;
+    background: var(--accent-border);
+    align-self: stretch;
+  }
+</style>
+
+<div class="search-page">
+
+  <div class="search-header">
+    <div class="eyebrow">NVD · NIST · CVE Database</div>
+    <h1>CVE Keyword Search</h1>
+    <p>Search the National Vulnerability Database by keyword to find matching CVEs and their severity scores.</p>
+  </div>
+
+  <div class="search-card">
+    <form action="/search" method="GET">
+      <div class="input-group">
+        <label class="input-label" for="keyword">Search Keyword</label>
+        <input
+          class="search-input"
+          type="text"
+          id="keyword"
+          name="keyword"
+          placeholder="e.g. apache, buffer overflow, sql injection..."
+          autocomplete="off"
+          autofocus
+          required
+        />
+        <p class="search-hint">Searches CVE descriptions and metadata across the NVD database.</p>
+      </div>
+
+      <button class="search-btn" type="submit">Search CVEs →</button>
+    </form>
+
+    <div class="example-tags">
+      <div class="example-label">Quick searches</div>
+      <div class="tags">
+        <a class="tag" href="/search?keyword=apache">apache</a>
+        <a class="tag" href="/search?keyword=buffer+overflow">buffer overflow</a>
+        <a class="tag" href="/search?keyword=sql+injection">sql injection</a>
+        <a class="tag" href="/search?keyword=log4j">log4j</a>
+        <a class="tag" href="/search?keyword=openssl">openssl</a>
+        <a class="tag" href="/search?keyword=windows">windows</a>
+        <a class="tag" href="/search?keyword=remote+code+execution">remote code execution</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num">200K+</span>
+      <span class="stat-desc">CVEs indexed</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">LIVE</span>
+      <span class="stat-desc">NVD API</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">50</span>
+      <span class="stat-desc">Results per query</span>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

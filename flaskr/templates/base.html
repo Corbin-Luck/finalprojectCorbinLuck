@@ -11,7 +11,7 @@
     <img src="https://static.vecteezy.com/system/resources/previews/020/966/106/non_2x/server-icon-design-free-vector.jpg" id="header-img" alt="Website Logo" />
     <h1>Vulnerability Tracker</h1>
     <nav id="nav-bar">
-      <a class="nav-link" >Lookup</a>
+      <a class="nav-link" href="{{ url_for('search.search') }}">Lookup</a>
       <a class="nav-link" href="{{ url_for('low.lowseverity') }}">Low-Severity</a>
       <a class="nav-link" >Donations</a>
       </nav>
