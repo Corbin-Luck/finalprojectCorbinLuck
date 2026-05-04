@@ -18,7 +18,9 @@ page that is found on many free to use websites.
  
 ### Dependencies
 
-This project was tested on a Window 11 machine, other OS systems may or may not work
+* This project was tested on a Window 11 machine, other OS systems may or may not work
+* It was also created in Python version 3.14, it is unknown if it will work in older or newer versions
+
 Please install the pip requirements:
 ```
 pip install -r requirements.txt
@@ -34,6 +36,8 @@ pip install -r requirements.txt
 ### Executing program
  
 * After cloning the repository you will want to run the following command below
+  * Note that to update any changes to the website the session will need to be shutdown if a flask server is not being
+  used
 ```
 flask --app flaskr run --debug
 ```
