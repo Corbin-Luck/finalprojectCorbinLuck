@@ -5,7 +5,7 @@ import requests
 
 bp = Blueprint('search', __name__)
 
-def search_cves(keyword, results_per_page=50):
+def search_cves(keyword, results_per_page=2000):
     params = {
         "keywordSearch": keyword,
         "resultsPerPage": str(results_per_page),
