@@ -1,5 +1,5 @@
 import os
-
+from flask import redirect, url_for
 import requests
 import time
 
@@ -25,13 +25,12 @@ def create_app(test_config=None):
     # ensure the instance folder exists
     os.makedirs(app.instance_path, exist_ok=True)
 
-    # a simple page that says hello
     @app.route('/')
-    def home_Page():
-        return render_template('base.html')
+    def low_vulnerabilty():
+        return redirect(url_for('low.lowseverity'))
 
-    from . import home
-    app.register_blueprint(home.bp)
+    from . import low
+    app.register_blueprint(low.bp)
 
     return app
 
