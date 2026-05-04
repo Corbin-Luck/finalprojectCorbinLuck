@@ -1,0 +1,662 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<style>
+  :root {
+    --accent: #00bfff;
+    --accent-dim: rgba(0, 191, 255, 0.10);
+    --accent-border: rgba(0, 191, 255, 0.25);
+    --bg-page: #13131f;
+    --bg-card: #1e1e2f;
+    --text: #e8e8f0;
+    --text-dim: #7a7a9a;
+    --low-green: #00e5a0;
+    --mid-yellow: #f5c518;
+    --warn: #ff6b35;
+    --critical-red: #ff3860;
+    --font-main: Arial, sans-serif;
+    --font-mono: 'Courier New', monospace;
+  }
+
+  body { background-color: var(--bg-page); color: var(--text); }
+
+  /* ── PAGE WRAPPER ── */
+  .donate-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 30px 80px;
+  }
+
+  /* ── HEADER ── */
+  .donate-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .donate-header .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .donate-header h1 {
+    font-family: var(--font-main);
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    margin: 0 0 14px;
+    letter-spacing: 1px;
+  }
+
+  .donate-header p {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ── MISSION CARD ── */
+  .mission-card {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mission-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .mission-card::after {
+    content: '{ }';
+    position: absolute;
+    right: 24px;
+    top: 22px;
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    color: rgba(0,191,255,0.06);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .mission-title {
+    font-family: var(--font-main);
+    font-size: 0.68rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .mission-card p {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  .mission-card p + p { margin-top: 10px; }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-border);
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 6px 6px 0 0;
+  }
+
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-family: var(--font-main);
+    font-size: 0.63rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: bold;
+  }
+
+  /* ── DONATION CARD ── */
+  .donate-card {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 32px 36px;
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .donate-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .donate-card-title {
+    font-family: var(--font-main);
+    font-size: 0.68rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 22px;
+  }
+
+  /* ── AMOUNT TIERS ── */
+  .tiers-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .tier-btn {
+    background: #13131f;
+    border: 1px solid var(--accent-border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    padding: 12px 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.18s;
+    line-height: 1.2;
+  }
+
+  .tier-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .tier-btn.active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .tier-btn .tier-amount {
+    font-size: 1.05rem;
+    font-weight: bold;
+    display: block;
+  }
+
+  .tier-btn .tier-tag {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    display: block;
+    margin-top: 3px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .tier-btn.active .tier-tag { color: var(--accent); opacity: 0.75; }
+
+  /* ── CUSTOM AMOUNT ── */
+  .custom-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    margin-bottom: 22px;
+  }
+
+  .custom-prefix {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-dim);
+    background: #13131f;
+    border: 1px solid var(--accent-border);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+  }
+
+  .custom-input {
+    flex: 1;
+    background: #13131f;
+    border: 1px solid var(--accent-border);
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .custom-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .custom-input::placeholder { color: var(--text-dim); }
+
+  /* ── DIVIDER ── */
+  .card-divider {
+    border: none;
+    border-top: 1px solid var(--accent-border);
+    margin: 20px 0;
+  }
+
+  /* ── NAME / EMAIL ── */
+  .fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .field-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .field-input {
+    background: #13131f;
+    border: 1px solid var(--accent-border);
+    border-radius: 4px;
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    padding: 10px 13px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .field-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .field-input::placeholder { color: var(--text-dim); }
+
+  /* ── NOTE CHECKBOX ── */
+  .anon-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    cursor: pointer;
+  }
+
+  .anon-row input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .anon-row span {
+    font-family: var(--font-mono);
+    font-size: 0.77rem;
+    color: var(--text-dim);
+  }
+
+  /* ── SUBMIT BUTTON ── */
+  .donate-submit {
+    width: 100%;
+    background: var(--accent);
+    color: #0a0a14;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 15px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.12s, box-shadow 0.2s;
+  }
+
+  .donate-submit:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,191,255,0.25);
+  }
+
+  .donate-submit:active { transform: translateY(0); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    font-family: var(--font-mono);
+    font-size: 0.67rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* ── ALTERNATIVE METHODS ── */
+  .alt-card {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 24px 32px;
+    position: relative;
+  }
+
+  .alt-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--low-green), transparent);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .alt-card-title {
+    font-family: var(--font-main);
+    font-size: 0.68rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--low-green);
+    margin-bottom: 16px;
+  }
+
+  .alt-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .alt-method {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #13131f;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 5px;
+    padding: 13px 16px;
+    text-decoration: none;
+    transition: border-color 0.18s, background 0.18s;
+  }
+
+  .alt-method:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-dim);
+  }
+
+  .alt-icon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    width: 28px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .alt-info { flex: 1; }
+
+  .alt-name {
+    font-family: var(--font-main);
+    font-size: 0.82rem;
+    color: var(--text);
+    font-weight: bold;
+  }
+
+  .alt-desc {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .alt-arrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  /* ── SUCCESS BANNER ── */
+  .success-banner {
+    background: rgba(0,229,160,0.08);
+    border: 1px solid rgba(0,229,160,0.3);
+    color: var(--low-green);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .tier-grid { grid-template-columns: repeat(2, 1fr); }
+    .fields-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .stats-row .stat-card:last-child { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="donate-page">
+
+  <!-- Header -->
+  <div class="donate-header">
+    <div class="eyebrow">Support the Project</div>
+    <h1>Keep the Tracker Running</h1>
+    <p>This tool is free, open, and ad-free. Your contribution helps cover API costs, hosting, and continued development.</p>
+  </div>
+
+  <!-- Mission -->
+  <div class="mission-card">
+    <div class="mission-title">Why We Built This</div>
+    <p>Security researchers, sysadmins, and developers need fast, no-friction access to CVE data. The NVD API is powerful but raw — we built a layer on top that makes vulnerability intelligence readable and actionable.</p>
+    <p>Every dollar goes directly toward keeping the lights on: server costs, NVD API rate limits, and bandwidth. No ads. No tracking. No paywalls.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value">200K+</div>
+      <div class="stat-label">CVEs Indexed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">Free</div>
+      <div class="stat-label">Always & Forever</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Ads Served</div>
+    </div>
+  </div>
+
+  <!-- Donation Form -->
+  <div class="donate-card">
+    <div class="donate-card-title">Choose an Amount</div>
+
+    <div class="success-banner" id="successBanner">
+      ✓ Thank you! Your support keeps this project alive.
+    </div>
+
+    <div class="tiers-label">Quick Select</div>
+    <div class="tier-grid">
+      <button class="tier-btn" onclick="selectTier(this, 5)">
+        <span class="tier-amount">$5</span>
+        <span class="tier-tag">Coffee</span>
+      </button>
+      <button class="tier-btn active" onclick="selectTier(this, 10)">
+        <span class="tier-amount">$10</span>
+        <span class="tier-tag">Supporter</span>
+      </button>
+      <button class="tier-btn" onclick="selectTier(this, 25)">
+        <span class="tier-amount">$25</span>
+        <span class="tier-tag">Patron</span>
+      </button>
+      <button class="tier-btn" onclick="selectTier(this, 50)">
+        <span class="tier-amount">$50</span>
+        <span class="tier-tag">Champion</span>
+      </button>
+    </div>
+
+    <div class="tiers-label">Custom Amount</div>
+    <div class="custom-row">
+      <span class="custom-prefix">$</span>
+      <input
+        class="custom-input"
+        type="number"
+        id="customAmount"
+        placeholder="Enter any amount"
+        min="1"
+        oninput="clearTiers()"
+      />
+    </div>
+
+    <hr class="card-divider">
+
+    <div class="fields-grid">
+      <div class="field-group">
+        <label class="field-label" for="donorName">Name</label>
+        <input class="field-input" type="text" id="donorName" placeholder="Your name" />
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="donorEmail">Email</label>
+        <input class="field-input" type="email" id="donorEmail" placeholder="your@email.com" />
+      </div>
+    </div>
+
+    <label class="anon-row">
+      <input type="checkbox" id="anonCheck" />
+      <span>Donate anonymously — don't display my name publicly</span>
+    </label>
+
+    <button class="donate-submit" onclick="handleDonate()">
+      Donate Now →
+    </button>
+
+    <div class="disclaimer">
+      Payments processed securely. This project is not a registered nonprofit.<br>Contributions are not tax-deductible.
+    </div>
+  </div>
+
+  <!-- Alternative Methods -->
+  <div class="alt-card">
+    <div class="alt-card-title">Other Ways to Help</div>
+    <div class="alt-methods">
+      <a class="alt-method" href="#" target="_blank" rel="noopener">
+        <span class="alt-icon">[gh]</span>
+        <div class="alt-info">
+          <div class="alt-name">Star on GitHub</div>
+          <div class="alt-desc">Help others discover the project — free and incredibly helpful</div>
+        </div>
+        <span class="alt-arrow">→</span>
+      </a>
+      <a class="alt-method" href="#" target="_blank" rel="noopener">
+        <span class="alt-icon">[$]</span>
+        <div class="alt-info">
+          <div class="alt-name">Ko-fi</div>
+          <div class="alt-desc">One-time or recurring support via Ko-fi</div>
+        </div>
+        <span class="alt-arrow">→</span>
+      </a>
+      <a class="alt-method" href="#" target="_blank" rel="noopener">
+        <span class="alt-icon">[₿]</span>
+        <div class="alt-info">
+          <div class="alt-name">Crypto</div>
+          <div class="alt-desc">Accept BTC, ETH, or other currencies — contact us for address</div>
+        </div>
+        <span class="alt-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let selectedAmount = 10;
+
+  function selectTier(btn, amount) {
+    document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedAmount = amount;
+    document.getElementById('customAmount').value = '';
+  }
+
+  function clearTiers() {
+    document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+    selectedAmount = null;
+  }
+
+  function handleDonate() {
+    const custom = document.getElementById('customAmount').value;
+    const amount = custom ? parseFloat(custom) : selectedAmount;
+
+    if (!amount || amount < 1) {
+      alert('Please select or enter a valid donation amount.');
+      return;
+    }
+
+    // Swap this out for a real payment processor (Stripe, PayPal, etc.)
+    const banner = document.getElementById('successBanner');
+    banner.style.display = 'block';
+    banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Reset after a moment
+    setTimeout(() => { banner.style.display = 'none'; }, 6000);
+  }
+</script>
+
+{% endblock %}

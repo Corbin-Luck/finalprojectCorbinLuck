@@ -34,6 +34,9 @@ def create_app(test_config=None):
     from . import search
     app.register_blueprint(search.bp)
 
+    from . import donate
+    app.register_blueprint(donate.bp)
+
     return app
 
 ## API Functions ##
