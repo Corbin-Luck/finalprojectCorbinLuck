@@ -25,8 +25,8 @@ def create_app(test_config=None):
     os.makedirs(app.instance_path, exist_ok=True)
 
     @app.route('/')
-    def low_vulnerabilty():
-        return redirect(url_for('low.lowseverity'))
+    def search_vulnerabilties():
+        return redirect(url_for('search.search'))
 
     from . import low
     app.register_blueprint(low.bp)
